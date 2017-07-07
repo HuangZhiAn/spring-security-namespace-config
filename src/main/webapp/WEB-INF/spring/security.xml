@@ -9,6 +9,12 @@
     <!--配置security为none,访问pattern所包含的url时，将跳过spring security框架-->
     <http pattern="/view/loginPage.html" security="none"></http>
 
+
+    <http pattern="/special_resources/**" entry-point-ref="myEntryPoint">  <!--entry-point用于处理抛出验证异常后的跳转动作-->
+        <custom-filter before="FORM_LOGIN_FILTER" ref="myFilter" />
+    </http>
+    <beans:bean id="myFilter" class="com.hza.filter.MySpecialAccessControlFilter"/>
+    <beans:bean id="myEntryPoint" class="com.hza.filter.UnauthorizedEntryPoint"/>
     <!--http元素用于配置访问控制和登录验证-->
     <http use-expressions="true">
         <!--使csrf不可用 TUDO 自定义登录页，使用csrf，不使用模板-->
