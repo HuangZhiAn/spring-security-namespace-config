@@ -23,6 +23,7 @@ public class CustomUserDetailService implements UserDetailsService{
             List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_SPECIAL"));
             user= new User(s,"111111",authorities);
         }else if(s.equals("Jone")){
             List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
