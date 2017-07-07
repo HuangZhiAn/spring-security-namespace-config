@@ -18,15 +18,16 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.AccessControlException;
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
  * Created by JoeHuang on 2017/7/7.
  */
-public class MySpecialAuthenticationFilter extends GenericFilterBean{
+public class MySpecialAccessControlFilter extends GenericFilterBean{
 
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws AccessControlException, IOException, ServletException {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -38,6 +39,8 @@ public class MySpecialAuthenticationFilter extends GenericFilterBean{
                 filterChain.doFilter(servletRequest,servletResponse);
             }
         }
-        throw 
+        String e = "非special用户不能访问";
+        String e2 = new String(e.getBytes(),"utf-8");
+        throw new AccessControlException(e2);
     }
 }
