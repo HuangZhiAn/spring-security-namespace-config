@@ -1,5 +1,5 @@
 # spring-security-namespace-config
-#  Web.xml：
+####  Web.xml
 	//add filter
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -10,77 +10,79 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-add security xml config file to spring path.There a example at the end.
+  
 
-Custom a security Filter:
+Add security xml config file to spring path.There a example at the end.
+
+Custom a security Filter<br>
 Office doc: http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#ns-custom-filters
 
-Add blow config to security xml file
-<http>
-<custom-filter before="FORM_LOGIN_FILTER" ref="myFilter" />
-</http>
-<beans:bean id="myFilter" class="com.mycompany.MySpecialAuthenticationFilter"/>
+Add blow config to security xml file<br>
+`<http>`<br>
+`<custom-filter before="FORM_LOGIN_FILTER" ref="myFilter" />`<br>
+`</http>`<br>
+`<beans:bean id="myFilter" class="com.mycompany.MySpecialAuthenticationFilter"/>`
+_**Notice**: If not only one <http> element,the last <http> pattern should be "/**"_
 
-Notice: If not only one <http> element,the last <http> pattern should be "/**"
-
-Add passwordEncoder
-Spring security has some inner password encoder method,we can use them like that
-<password-encoder hash="md5" />
+Add passwordEncoder<br>
+Spring security has some inner password encoder method,we can use them like that<br>
+`<password-encoder hash="md5" />`<br>
 If you have used password-encoder your passwords in database or file are supposed to be encoded.
 Open xsd file to see the inner password encoder method that we can choose.
 
-Custom a password encoder
-Create your password encoder and let it implements the PasswordEncoder interface of framwork.
-Config your password encoder in authentication-provider element like that
-<authentication-provider user-service-ref="customUserDetailService"> <!--自定义UserDetailService-->
-            <!--自定义password encoder-->
-            <password-encoder ref="myPasswordEncoder"></password-encoder>
-        </authentication-provider>
+Custom a password encoder<br>
+Create your password encoder and let it implements the PasswordEncoder interface of framwork.<br>
+Config your password encoder in authentication-provider element like that<br>
+    `<authentication-provider user-service-ref="customUserDetailService"> <!--自定义UserDetailService-->`<br>
+        `<!--自定义password encoder-->`<br>
+        `<password-encoder ref="myPasswordEncoder"></password-encoder>`<br>
+    `</authentication-provider>`
 
 Add session manager
 add session listener in web.xml
-  <listener>
-    <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
-  </listener>
-add session management in security config file
-	<session-management>
-            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false"/>
-        </session-management>
+  `<listener>`
+    `<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>`
+  `</listener>`  
+Add session management in security config file
+	`<session-management>`  
+        `<concurrency-control max-sessions="1" error-if-maximum-exceeded="false"/>`
+    `</session-management>`
 
-Tips:
+##Tips
 
-1.Security congfig xml file is supported to start with "beans:beans" to be include in the application context.
+1. Security congfig xml file is supported to start with "beans:beans" to be include in the application context.
 
-2.The <http> element is responsible for creating a FilterChainProxy and the filter beans
+2. The <http> element is responsible for creating a FilterChainProxy and the filter beans
 
 <intercept-url> is to config url access control,when there is more than a <intercept-url> and url config conflicts,the framework will use the first config.As the doc say:
 
 You can use multiple <intercept-url> elements to define different access requirements for different sets of URLs, but they will be evaluated in the order listed and the first match will be used. 
 
-3.We can have multiple <authentication-provider>
+3. We can have multiple <authentication-provider>
 
-4.Disable csrf 
-<csrf disabled="true"/>
+4.     <csrf disabled="true"/>
+Disable csrf
 
-5.<form-login login-page="/view/loginPage.html"/>
+5.     <form-login login-page="/view/loginPage.html"/>
 cannot use "classpath:" to specify a login page
 
-6.use-expressions="true" default is true 
+6. use-expressions="true" default is true 
 when it's true, we are supported to use expressions like this: access="hasRole('USER')"
 
-7.Customing a UserDetailService, when the user is not exist,we need to throw UsernameNotFoundException.
+7. Customing a UserDetailService, when the user is not exist,we need to throw UsernameNotFoundException.
 
-8.when we need to custom sql to fix our database,we can add the provider blow.Don't forget to override the sql.
-<authentication-provider>
-            <!--数据库中取用户数据，自定义sql-->
-            <jdbc-user-service data-source-ref="dataSource" users-by-username-query="select username,password,1 as enabled from account WHERE username=?"
-                                        authorities-by-username-query="select u.username, r.name as role from account u,b_user_role ur, b_role r where u.id=ur.user_id and r.id = ur.role_id and u.username=?"/>
-        </authentication-provider>
+8.     <authentication-provider><br>
+           <!--数据库中取用户数据，自定义sql-->
+           <jdbc-user-service data-source-ref="dataSource" users-by-username-query="select username,password,1 as enabled from account WHERE username=?"
+                authorities-by-username-query="select u.username, r.name as role from account u,b_user_role ur, b_role r where u.id=ur.user_id and r.id = ur.role_id and u.username=?"/>
+       </authentication-provider><code>
+when we need to custom sql to fix our database,we can add the provider blow.Don't forget to override the sql.
+    
 
 
 
-# Example code:
-<beans:beans xmlns="http://www.springframework.org/schema/security"
+## Example code
+    <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -135,4 +137,4 @@ when it's true, we are supported to use expressions like this: access="hasRole('
 
     <beans:import resource="application-context.xml"></beans:import>
 
-</beans:beans>
+    </beans:beans>
