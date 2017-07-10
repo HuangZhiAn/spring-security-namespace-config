@@ -9,7 +9,6 @@
     <!--配置security为none,访问pattern所包含的url时，将跳过spring security框架-->
     <http pattern="/view/loginPage.html" security="none"></http>
 
-
     <http pattern="/special_resources/**" entry-point-ref="myEntryPoint">  <!--entry-point用于处理抛出验证异常后的跳转动作-->
         <custom-filter before="FORM_LOGIN_FILTER" ref="myFilter" />
     </http>
@@ -31,10 +30,12 @@
         <authentication-provider user-service-ref="customUserDetailService"> <!--自定义UserDetailService-->
         </authentication-provider>
         <authentication-provider>
+            <!--密码加密 md5需要32位加密-->
+            <password-encoder hash="md5" />
             <!--从配置文件中读用户信息-->
             <user-service>
-                <user name="jimi" password="jimispassword" authorities="ROLE_USER, ROLE_ADMIN" />
-                <user name="bob" password="bobspassword" authorities="ROLE_USER" />
+                <user name="jimi" password="0ddbe36716977a9cfe7595b36e4409fe" authorities="ROLE_USER, ROLE_ADMIN" /> <!--jimispassword-->
+                <user name="bob" password="12b141f35d58b8b3a46eea65e6ac179e" authorities="ROLE_USER" /> <!--bobspassword-->
             </user-service>
         </authentication-provider>
         <authentication-provider>
