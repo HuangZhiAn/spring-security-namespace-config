@@ -14,6 +14,7 @@
     </http>
     <beans:bean id="myFilter" class="com.hza.filter.MySpecialAccessControlFilter"/>
     <beans:bean id="myEntryPoint" class="com.hza.filter.UnauthorizedEntryPoint"/>
+
     <!--http元素用于配置访问控制和登录验证-->
     <http use-expressions="true">
         <!--使csrf不可用 TUDO 自定义登录页，使用csrf，不使用模板-->
@@ -23,6 +24,10 @@
         <intercept-url pattern="/**" access="hasRole('USER')" />
         <form-login login-page="/view/loginPage.html" />
         <logout />
+        <!--添加session管理 限制同一用户的session数量-->
+        <session-management>
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false"/>
+        </session-management>
     </http>
 
     <!--配置用户信息来源 自定义用户数据来源，从数据库中取数据-->
