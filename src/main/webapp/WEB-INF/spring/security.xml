@@ -25,9 +25,11 @@
         <logout />
     </http>
 
-    <!--配置用户信息来源 TUDO 自定义用户数据来源，从数据库中取数据-->
+    <!--配置用户信息来源 自定义用户数据来源，从数据库中取数据-->
     <authentication-manager>
         <authentication-provider user-service-ref="customUserDetailService"> <!--自定义UserDetailService-->
+            <!--自定义password encoder-->
+            <password-encoder ref="myPasswordEncoder"></password-encoder>
         </authentication-provider>
         <authentication-provider>
             <!--密码加密 md5需要32位加密-->

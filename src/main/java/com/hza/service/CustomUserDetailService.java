@@ -24,11 +24,11 @@ public class CustomUserDetailService implements UserDetailsService{
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             authorities.add(new SimpleGrantedAuthority("ROLE_SPECIAL"));
-            user= new User(s,"111111",authorities);
+            user= new User(s,"111111hza",authorities);
         }else if(s.equals("Jone")){
             List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-            user= new User(s,"111111",authorities);
+            user= new User(s,"111111hza",authorities);
         }else{
             throw  new UsernameNotFoundException("用户不存在");
         }
