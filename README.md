@@ -56,7 +56,7 @@ Add session management in security config file
   <concurrency-control max-sessions="1" error-if-maximum-exceeded="false"/>
 </session-management>
 ```
-##Tips
+## Tips
 
 1. Security congfig xml file is supported to start with "beans:beans" to be include in the application context.
 
